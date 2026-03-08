@@ -87,10 +87,11 @@ function moveButton() {
     const btn = document.getElementById('annoying-btn');
 
     // When the button moves for the first time, switch it to fixed positioning
-    // so it can escape the bounds of the glass container
+    // and append to body so it can truly escape the bounds of the glass container's overflow:hidden and backdrop-filters
     if (moveCount === 0) {
         btn.style.position = 'fixed';
         btn.style.zIndex = '9999';
+        document.body.appendChild(btn);
     }
 
     if (moveCount >= MAX_MOVES) {
@@ -124,6 +125,12 @@ function moveButton() {
 
 // Stage 4 Logic (Fake Loading)
 function startLoading() {
+    // Clean up the escaping button since it was appended to the body
+    const annoyingBtn = document.getElementById('annoying-btn');
+    if (annoyingBtn && annoyingBtn.parentNode === document.body) {
+        annoyingBtn.remove();
+    }
+
     nextStage(4);
 
     const progressBar = document.getElementById('progress-bar');
