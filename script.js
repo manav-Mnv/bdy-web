@@ -84,26 +84,34 @@ function initAnnoyingButton() {
 }
 
 function moveButton() {
+    const btn = document.getElementById('annoying-btn');
+
+    // When the button moves for the first time, switch it to fixed positioning
+    // so it can escape the bounds of the glass container
+    if (moveCount === 0) {
+        btn.style.position = 'fixed';
+        btn.style.zIndex = '9999';
+    }
+
     if (moveCount >= MAX_MOVES) {
-        const btn = document.getElementById('annoying-btn');
         btn.innerHTML = 'Okay fine, click me 🙄';
+        // Reset properties to ensure it's clickable
+        btn.style.pointerEvents = 'auto';
         return; // Stop moving
     }
 
-    const container = document.querySelector('.annoying-btn-container');
-    const btn = document.getElementById('annoying-btn');
-
-    const containerRect = container.getBoundingClientRect();
     const btnRect = btn.getBoundingClientRect();
 
-    const maxX = containerRect.width - btnRect.width;
-    const maxY = containerRect.height - btnRect.height;
+    // Use the entire browser viewport area
+    const maxX = window.innerWidth - btnRect.width;
+    const maxY = window.innerHeight - btnRect.height;
 
-    // Calculate random position (ensuring it stays within bounds)
-    const randomX = Math.max(0, Math.floor(Math.random() * maxX));
-    const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+    // Calculate random position (ensuring it stays within bounds of the viewport)
+    // Add a safe margin of 20px so it doesn't get clipped exactly at the edge
+    const padding = 20;
+    const randomX = Math.max(padding, Math.min(Math.floor(Math.random() * maxX), maxX - padding));
+    const randomY = Math.max(padding, Math.min(Math.floor(Math.random() * maxY), maxY - padding));
 
-    // Using percentages for responsiveness if window resizes, but px is fine inside container too
     btn.style.transform = 'translate(0, 0)'; // Reset translate
     btn.style.left = `${randomX}px`;
     btn.style.top = `${randomY}px`;
