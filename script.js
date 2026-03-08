@@ -176,27 +176,34 @@ function startLoading() {
 }
 
 // Stage 5 Logic (AI Roast)
-let typeWriterTimeout = null;
-
 function generateRoast() {
+    const btn = document.querySelector('.roast-section .outline-btn');
+    if (btn.disabled) return;
+
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+
     const roastBox = document.getElementById('roast-output');
     roastBox.style.display = 'block';
-
-    // Clear any existing timeouts to prevent overlapping typing
-    if (typeWriterTimeout) {
-        clearTimeout(typeWriterTimeout);
-    }
-
-    // Instantly set text
     roastBox.innerHTML = 'Analyzing...';
 
     const roasts = [
         "Analysis complete:\n\nIQ: Low\nEQ: Questionable\nTolerance for nonsense: Maximum\n\nConclusion:\nStill a legend somehow. Happy Birthday!",
         "System Output:\n\nIQ: Low\nMaturity level: Pending...\nVibe check: 100% Passed\n\nResult:\nYou're aging like fine wine, but acting like a kid. Keep it up.",
-        "Scanning target...\n\nIQ: Low\nMain character energy: Maximum\nDelusion level: Through the roof\n\nVerdict:\nToo iconic to roast. Have the best birthday!"
+        "Scanning target...\n\nIQ: Low\nMain character energy: Maximum\nDelusion level: Through the roof\n\nVerdict:\nToo iconic to roast. Have the best birthday!",
+        "Diagnostic Report:\n\nIQ: Low\nSarcasm levels: Dangerously high\nBrain cells remaining: 2 (and they are currently fighting)\n\nConclusion:\nSomehow you're still winning at life. Happy Birthday!",
+        "Running diagnostics...\n\nIQ: Low\nRed flags: Many\nSelf-awareness: 404 Not Found\n\nResult:\nWe wouldn't have you any other way. Happy Cake Day!",
+        "Vibe Analysis:\n\nIQ: Low\nAesthetic: Flawless\nDecision making skills: Please try again later\n\nVerdict:\nYou are the main character today. Enjoy it!"
     ];
 
-    const selectedRoast = roasts[Math.floor(Math.random() * roasts.length)];
+    // Ensure we don't get the same roast twice in a row if possible
+    let newRoast;
+    do {
+        newRoast = roasts[Math.floor(Math.random() * roasts.length)];
+    } while (newRoast === window.lastRoast && roasts.length > 1);
+
+    window.lastRoast = newRoast;
 
     // Typewriter effect
     let i = 0;
@@ -205,13 +212,18 @@ function generateRoast() {
         if (i === 0) {
             roastBox.innerHTML = '';
         }
-        if (i < selectedRoast.length) {
-            roastBox.innerHTML += selectedRoast.charAt(i);
+        if (i < newRoast.length) {
+            roastBox.innerHTML += newRoast.charAt(i);
             i++;
-            typeWriterTimeout = setTimeout(typeWriter, 30); // slightly faster typing speed
+            setTimeout(typeWriter, 30); // slightly faster typing speed
+        } else {
+            // Re-enable button
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
         }
     }
 
     // Start typing after initial delay representing "thinking"
-    typeWriterTimeout = setTimeout(typeWriter, 400);
+    setTimeout(typeWriter, 500);
 }
