@@ -1,105 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Impossible Birthday Wish</title>
+    <title>Birthday Challenge 🎂</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
-        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+        .container {
+            width: 90%;
+            max-width: 400px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            font-size: 16px;
+            background: #ffd700;
+            cursor: pointer;
+            color: #0b0b0b;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .quote {
+            font-size: 22px;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="app">
-        <!-- Background Elements -->
-        <div class="bg-orb orb-1"></div>
-        <div class="bg-orb orb-2"></div>
 
-        <main class="glass-container">
-            <!-- Stage 1: Welcome -->
-            <section id="stage-1" class="stage active">
-                <h1 class="title">Hello <span class="emoji">👀</span></h1>
-                <p class="subtitle">Someone very special has a birthday today...</p>
-                <div class="spacer"></div>
-                <p class="text">But first,<br>you must prove you deserve the wish.</p>
-                <button class="btn primary-btn" onclick="nextStage(2)">Start the Challenge</button>
-            </section>
+    <div class="container">
 
-            <!-- Stage 2: Funny Question -->
-            <section id="stage-2" class="stage hidden">
-                <h2 class="title-sm">Question 1:</h2>
-                <p class="text-large">Are you actually getting older or just upgrading?</p>
+        <div id="page1">
 
-                <div class="button-group">
-                    <button class="btn secondary-btn" onclick="wrongAnswer()">Getting older 😭</button>
-                    <button class="btn primary-btn" onclick="nextStage(3)">Upgrading 😎</button>
-                </div>
+            <h2>Hello 👀</h2>
 
-                <div id="error-message" class="error-msg">
-                    Wrong answer.<br>
-                    Confidence level: 0%<br>
-                    Try again.
-                </div>
-            </section>
+            <p>Someone very special has a birthday today...</p>
 
-            <!-- Stage 3: Annoying Button -->
-            <section id="stage-3" class="stage hidden">
-                <p class="text-large">Click the button to unlock your birthday message.</p>
-                <div class="annoying-btn-container">
-                    <button id="annoying-btn" class="btn primary-btn" onmouseover="moveButton()"
-                        onclick="startLoading()">Unlock Message 🔓</button>
-                </div>
-            </section>
+            <p>But first... you must complete the challenge.</p>
 
-            <!-- Stage 4: Fake Loading Screen -->
-            <section id="stage-4" class="stage hidden">
-                <h2 class="title-sm" id="loading-text">Loading birthday message...</h2>
-                <div class="progress-bar-container">
-                    <div id="progress-bar" class="progress-bar"></div>
-                </div>
-                <p id="loading-percentage" class="percentage">0%</p>
+            <button onclick="start()">Start</button>
 
-                <div id="crash-message" class="error-msg crash-msg">
-                    Error: Too much awesomeness detected.<br>
-                    Restarting...
-                </div>
-            </section>
+        </div>
 
-            <!-- Stage 5: Final Wish -->
-            <section id="stage-5" class="stage hidden">
-                <h2 class="title final-title">Okay okay...</h2>
-                <p class="subtitle">You passed the chaos test.</p>
 
-                <div class="final-wish-box">
-                    <h1 class="grand-title">Happy Birthday <span class="emoji">🎂✨</span></h1>
-                    <div class="wish-text">
-                        <p>Stay rare.</p>
-                        <p>Stay wise.</p>
-                        <p>Stay unapologetically you.</p>
-                    </div>
-                </div>
+        <div id="page2" class="hidden">
 
-                <div class="roast-section">
-                    <button class="btn outline-btn" onclick="generateRoast()">Generate AI birthday compliment
-                        🤖</button>
-                    <div id="roast-output" class="roast-box"></div>
-                </div>
-            </section>
-        </main>
+            <p>Question 1:</p>
+
+            <p>Are you getting older or upgrading?</p>
+
+            <button onclick="wrong()">Getting Older 😭</button>
+
+            <br>
+
+            <button onclick="next()">Upgrading 😎</button>
+
+        </div>
+
+
+        <div id="page3" class="hidden">
+
+            <p>Catch the button to unlock your birthday message.</p>
+
+            <button id="runBtn" style="transition: all 0.2s;">Click Me</button>
+
+        </div>
+
+
+        <div id="page4" class="hidden">
+
+            <p class="quote">
+
+                She’s mature enough to understand people,<br>
+                and strong enough to not tolerate them. ✨
+
+            </p>
+
+            <h2>Happy Birthday 🎂</h2>
+
+            <p>Stay rare. Stay wise. Stay you.</p>
+
+        </div>
+
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+
+    <script>
+
+        function start() {
+            document.getElementById("page1").classList.add("hidden")
+            document.getElementById("page2").classList.remove("hidden")
+        }
+
+        function wrong() {
+            alert("Wrong answer 😤 Try again")
+        }
+
+        function next() {
+            document.getElementById("page2").classList.add("hidden")
+            document.getElementById("page3").classList.remove("hidden")
+        }
+
+        const btn = document.getElementById("runBtn")
+
+        btn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            move();
+        })
+        btn.addEventListener("mouseover", move)
+
+        function move() {
+            btn.style.position = "absolute"
+            // Keep btn within bounds so it doesn't run off screen
+            btn.style.left = (Math.random() * 70 + 10) + "%"
+            btn.style.top = (Math.random() * 70 + 10) + "%"
+        }
+
+        btn.addEventListener("click", finish)
+
+        function finish() {
+            document.getElementById("page3").classList.add("hidden")
+            document.getElementById("page4").classList.remove("hidden")
+        }
+
+    </script>
+
 </body>
 
 </html>
